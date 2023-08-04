@@ -1,5 +1,6 @@
 package com.example.appwebsenai.controller;
 
+import com.example.appwebsenai.model.AccountType;
 import com.example.appwebsenai.model.Conta;
 import com.example.appwebsenai.model.ContaCorrentePF;
 import com.example.appwebsenai.model.Person;
@@ -20,23 +21,40 @@ public class BancoController implements ContaCorrente{
 
     private Long number = 0L;
 
-    @Override
-    public Double sacar(Double quantidade, Conta conta) {
-        return null;
-    }
 
 
-    public ContaCorrentePF criarConta(String name) throws Exception {
+
+    public ContaCorrentePF criarConta(String name, String accountType) throws Exception {
         ContaCorrentePF contaCorrentePF = new ContaCorrentePF();
-        number++;
-        contaCorrentePF.setNumeroConta(number);
+        StringBuilder message = new StringBuilder();
+        if(accountType == null){
+            message.append("Necessario informar otipoda conta.  ");
+        }
+        switch (accountType){
+            case "POUPANCA" :
+                contaCorrentePF.setAccountType(AccountType.CONTA_POUPANCA);
+                break;
+            case "CORRENTE" :
+                contaCorrentePF.setAccountType(AccountType.CONTA_CORRENTE);
+                break;
+            default:
+                message.append("Tipo da conta não é suportado.  ");
+        }
+
         Person person = controller.findPerson(name);
-        if (person != null){
+        if (person != null && contaCorrentePF.getError() == null){
+            number++;
+            contaCorrentePF.setNumeroConta(number);
             contaCorrentePF.setPerson(person);
             bancoRepository.save(contaCorrentePF);
-        }else{
-            throw new Exception("Pessoa não está cadastrada.");
+        }else if(contaCorrentePF.getError() == null){
+            message.append("  Pessoa ");
+            message.append(name).append(" não foi cadastrada.");
         }
+        if(!message.isEmpty()){
+            contaCorrentePF.setError(message.toString());
+        }
+
         return contaCorrentePF;
     }
 
@@ -50,20 +68,57 @@ public class BancoController implements ContaCorrente{
         }
         return null;
     }
-
     @Override
-    public void depositar(Double quantidade, Conta conta) {
-        Double total = conta.getSaldo() + quantidade;
-        conta.setSaldo(total);
+    public String depositar( Double valor, Long conta) {
+        String message = "";
+        ContaCorrentePF C = bancoRepository.findById(conta).get();
+        C.setSaldo(C.getSaldo() + valor);
+        bancoRepository.save(C);
+        return message = message + "R$" + valor +" depositados na conta de " + C.getPerson().getName() + ".";
     }
 
     @Override
-    public void transferir(Double quantidade, Conta conta) {
+    public String transferir(Long contaOrigem, Long contaDestino, Double valor) {
+        String message = "";
+        ContaCorrentePF destino = bancoRepository.findById(contaDestino).get();
+        ContaCorrentePF origem = bancoRepository.findById(contaOrigem).get();
 
+        if(origem.getSaldo() >= valor){
+            destino.setSaldo(destino.getSaldo() + valor);
+            origem.setSaldo(origem.getSaldo() - valor);
+            bancoRepository.save(destino);
+            bancoRepository.save(origem);
+            message = message + destino.getPerson().getName() + " recebeu uma transferencia de R$" + valor + " de " + origem.getPerson().getName() + ".";
+
+        }else{
+            message = message + "Saldo insuficiente.";
+        }
+        return message;
     }
 
     @Override
-    public Double consultaSaldo(ContaCorrentePF conta) {
-        return conta.getSaldo();
+    public String sacar(Double valor, Long conta) {
+        String message = "";
+        ContaCorrentePF saque = bancoRepository.findById(conta).get();
+
+        if(saque.getSaldo() >= valor){
+            saque.setSaldo(saque.getSaldo() - valor);
+            bancoRepository.save(saque);
+            message = message + "R$" + valor + " sacado da conta de " + saque.getPerson().getName() + ".";
+
+        }else{
+            message = message + "Saldo insuficiente.";
+        }
+
+        return message;
+    }
+
+    @Override
+    public String consultarSaldo(Long conta) {
+        String message = "";
+
+        ContaCorrentePF extrato = bancoRepository.findById(conta).get();
+
+        return message + "Saldo da conta número "+ extrato.getNumeroConta() + " de "+ extrato.getPerson().getName() + " é de R$" + extrato.getSaldo() + ".";
     }
 }

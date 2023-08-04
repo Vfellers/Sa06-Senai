@@ -10,12 +10,32 @@ public class ContaCorrentePF{
     @Column(name="numero_conta")
     private Long numeroConta;
 
-    //private Person pessoa;
-
     private Double saldo;
 
     @OneToOne
     private Person person;
+
+    @Column(name = "type")
+    private AccountType accountType;
+
+    @Transient
+    private String error;
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
 
     public Person getPerson() {
         return person;

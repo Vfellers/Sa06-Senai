@@ -5,11 +5,11 @@ import com.example.appwebsenai.model.ContaCorrentePF;
 
 public interface ContaCorrente {
 
-    Double sacar(Double quantidade, Conta conta);
+    String sacar(Double valor, Long conta);
 
-    void depositar(Double quantidade, Conta conta);
+    String depositar(Double valor, Long conta);
 
-    void transferir(Double quantidade, Conta conta);
+    String transferir(Long contaOrigem, Long contaDestino, Double valor);
 
-    Double consultaSaldo(ContaCorrentePF conta);
+    String consultarSaldo(Long conta);
 }
