@@ -79,6 +79,7 @@ public class BancoController implements ContaCorrente{
 
     @Override
     public String transferir(Long contaOrigem, Long contaDestino, Double valor) {
+        Double taxa = 10.0D;
         String message = "";
         ContaCorrentePF destino = bancoRepository.findById(contaDestino).get();
         ContaCorrentePF origem = bancoRepository.findById(contaOrigem).get();
@@ -86,9 +87,15 @@ public class BancoController implements ContaCorrente{
         if(origem.getSaldo() >= valor){
             destino.setSaldo(destino.getSaldo() + valor);
             origem.setSaldo(origem.getSaldo() - valor);
+
+                if (origem.getAccountType() != destino.getAccountType()){
+                    origem.setSaldo(origem.getSaldo()-taxa);
+                }
+
             bancoRepository.save(destino);
             bancoRepository.save(origem);
             message = message + destino.getPerson().getName() + " recebeu uma transferencia de R$" + valor + " de " + origem.getPerson().getName() + ".";
+
 
         }else{
             message = message + "Saldo insuficiente.";
