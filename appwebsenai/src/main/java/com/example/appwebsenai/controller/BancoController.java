@@ -128,4 +128,10 @@ public class BancoController implements ContaCorrente{
 
         return message + "Saldo da conta número "+ extrato.getNumeroConta() + " de "+ extrato.getPerson().getName() + " é de R$" + extrato.getSaldo() + ".";
     }
+
+    @Override
+    public String render(Double valor, Long conta){
+        String message = "";
+        return null;
+    };
 }

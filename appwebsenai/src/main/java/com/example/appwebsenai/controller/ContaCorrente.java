@@ -12,4 +12,6 @@ public interface ContaCorrente {
     String transferir(Long contaOrigem, Long contaDestino, Double valor);
 
     String consultarSaldo(Long conta);
+
+    String render(Double valor, Long conta);
 }
