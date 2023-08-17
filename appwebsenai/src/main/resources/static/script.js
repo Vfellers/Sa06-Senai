@@ -7,6 +7,31 @@ const tabelaPessoa = document.getElementById("tabelaPessoas")
 
 const btnAll = document.getElementById("listarPessoas");
 
+const btnDelete = document.getElementById("excluir");
+
+
+formPessoa.addEventListener("submit", function (event){
+    event.preventDefault(); // permite customizar o evento no submit
+    let formDados= new FormData(formPessoa);
+    let parametros= new URLSearchParams(formDados);
+
+    fetch("/person?"+ parametros.toString(),{                       //chamar os dados like postman
+        method: "POST"
+    }).then(response => response.json())
+        .then(data => {
+            document.getElementById("id").value = data.id;
+        })
+});
+
+
+btnDelete.addEventListener("click", function (){
+    fetch("/person?name=" + document.getElementById("nome").value, {
+        method: "DELETE"
+    }).then(response => response.json())
+
+});
+
+
 btnAll.addEventListener("click", function (){
     fetch("/all")
         .then(response => response.json())
@@ -24,16 +49,5 @@ btnAll.addEventListener("click", function (){
 
 
 
-formPessoa.addEventListener("submit", function (event){
-    event.preventDefault(); // permite customizar o evento no submit
-    let formDados= new FormData(formPessoa);
-    let parametros= new URLSearchParams(formDados);
 
-    fetch("/person?"+ parametros.toString(),{                       //chamar os dados like postman
-        method: "POST"
-    }).then(response => response.json())
-        .then(data => {
-            document.getElementById("id").value = data.id;
-        })
-});
 
