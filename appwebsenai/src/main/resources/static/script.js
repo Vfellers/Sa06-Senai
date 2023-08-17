@@ -32,6 +32,8 @@ btnDelete.addEventListener("click", function (){
 });
 
 
+
+
 btnAll.addEventListener("click", function (){
     fetch("/all")
         .then(response => response.json())
