@@ -1,14 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/html">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Banco Digital SENAI</title>
+    <link rel="icon" type="image/x-icon" href="./images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="Style.css">
 </head>
-<body>
-<a href="index.html">Cadastro de pessoa</a>
-<a href="conta.html">Cadastro de conta corrente</a>
-<br>
-Gerencie aqui sua conta
-</body>
 
+<body>
+<a href="index.html">Cadastar pessoa</a>
+<a href="conta.html">Cadastrar conta</a>
+<a href="gerenciar_conta.html">Gerenciar conta</a>
+<a href="contato.html">Contatos</a>
+<br>
+<br>
+<br>
+
+<div>
+    <h1> Cadastro de conta</h1>
+
+    <form id="cadastroConta">
+        <label for="numero_conta">Número da conta: </label>
+        <input id="numero_conta" type="text" readonly><br>
+        <p>
+            <label for="saldo">Saldo: </label>
+            <input id="saldo" type="text" readonly>
+        </p>
+        <label for="tipo_conta">Selecione o tipo da conta: </label>
+            <select id="tipo_conta">
+                <option value="corrente">Conta Corrente</option>
+                <option value="poupanca">Conta Poupança</option>
+            </select><br>
+            <label for="pessoa">Selecione uma pessoa: </label>
+                <select id="pessoa"></select><br>
+                <button type="button" id="criar">Cadastrar conta</button>
+
+    </form>
+</div>
+<br>
+-----------------------------------------------------
+<br>
+
+<div>
+    <button type="button" id="listarContas" >Listar Contas</button>
+    <table id="tabelaContas">
+        <thead>
+        <tr>
+            <th>| Numero da conta |</th>
+            <th>Nome |</th>
+            <th>Saldo |</th>
+            <th>Tipo da conta |</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Javascript vai preencher -->
+        </tbody>
+
+
+    </table>
+</div>
+
+<script src="conta.js"></script>
+</body>
 </html>

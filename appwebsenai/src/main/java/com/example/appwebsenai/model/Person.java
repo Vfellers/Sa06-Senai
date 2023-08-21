@@ -1,7 +1,7 @@
 package com.example.appwebsenai.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import javax.persistence.*;                   //--------
 
 @Entity
 public class Person {
@@ -12,6 +12,18 @@ public class Person {
     private String name;
 
     private String sexo;
+
+    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)             //------
+    private ContaCorrentePF contaCorrentePF;
+
+    public ContaCorrentePF getContaCorrentePF() {
+        return contaCorrentePF;
+    }
+
+    public void setContaCorrentePF(ContaCorrentePF contaCorrentePF) {
+        this.contaCorrentePF = contaCorrentePF;                           //-------
+    }
+
 
     public String getSexo() {
         return sexo;

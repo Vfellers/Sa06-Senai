@@ -25,7 +25,7 @@ formPessoa.addEventListener("submit", function (event){
 
 
 btnDelete.addEventListener("click", function (){
-    fetch("/person?name=" + document.getElementById("nome").value, {
+    fetch("/person?name=&sexo=", {
         method: "DELETE"
     }).then(response => response.json())
 

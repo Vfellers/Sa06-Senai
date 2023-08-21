@@ -21,6 +21,9 @@ public class BancoController implements ContaCorrente{
 
     private Long number = 0L;
 
+    public void delete(String name){                                //-----------------
+        bancoRepository.delete(this.consultaConta(name));
+    }
 
 
 
@@ -28,7 +31,7 @@ public class BancoController implements ContaCorrente{
         ContaCorrentePF contaCorrentePF = new ContaCorrentePF();
         StringBuilder message = new StringBuilder();
         if(accountType == null){
-            message.append("Necessario informar otipoda conta.  ");
+            message.append("Necessario informar o tipo da conta.  ");
         }
         switch (accountType){
             case "POUPANCA" :

@@ -4,10 +4,7 @@ import com.example.appwebsenai.controller.BancoController;
 import com.example.appwebsenai.model.AccountType;
 import com.example.appwebsenai.model.ContaCorrentePF;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;                   //------------
 
 import javax.websocket.server.PathParam;
 
@@ -21,6 +18,11 @@ public class BancoView {
     @PostMapping("/criarconta")
     public ContaCorrentePF criarConta(@PathParam("name") String name, @PathParam("type") String type) throws Exception {
         return bancoController.criarConta(name, type);
+    }
+
+    @DeleteMapping("/banco")                                                        //-------
+    public void delete(@PathParam("name") String name){
+        bancoController.delete(name);
     }
 
     @GetMapping("/type")
